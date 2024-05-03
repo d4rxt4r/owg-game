@@ -2,7 +2,7 @@ import MainScreen from '/app/screens/Main.js';
 import HomeDialog from '/app/screens/Home.js';
 import MagnitScreen from '/app/screens/Magnit.js';
 
-const { Application } = PIXI;
+const { Application, Assets } = PIXI;
 
 const APP_CONTAINER = document.getElementById('app');
 const APP_SCREENS = [new MainScreen(), new HomeDialog(), new MagnitScreen()];
@@ -10,6 +10,12 @@ const APP_SCREENS = [new MainScreen(), new HomeDialog(), new MagnitScreen()];
 const app = new Application();
 await app.init({ background: 'black', width: APP_CONTAINER.offsetWidth, height: APP_CONTAINER.offsetHeight });
 APP_CONTAINER.prepend(app.canvas);
+
+Assets.addBundle('fonts', [
+   { alias: 'kongtext', src: '/fonts/kongtext.ttf' },
+   { alias: 'ka1', src: '/fonts/ka1.ttf' },
+]);
+await Assets.loadBundle('fonts');
 
 const JOY_W = 200;
 const JOY_H = 200;

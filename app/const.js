@@ -1,0 +1,4 @@
+const ACCENT_COLOR = '#FFE89D';
+const SHADOW_COLOR = '#661D1D';
+
+export { ACCENT_COLOR, SHADOW_COLOR };

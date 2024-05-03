@@ -1,38 +1,42 @@
-const { Container, Sprite, Text } = PIXI;
+import { ACCENT_COLOR, SHADOW_COLOR } from '../const.js';
+import FancyText from './FancyText.js';
+
+const { Container, Text, Graphics } = PIXI;
+
+const BTN_HEIGHT = 46;
+const PADDING = 26;
 
 class Button extends Container {
    #pressedTex;
    #unpressedTex;
 
-   constructor({ x, y, caption, tex1, tex2, clickHandler }) {
+   constructor({ x, y, width, caption, clickHandler }) {
       super();
 
-      this.#unpressedTex = tex1;
-      this.#pressedTex = tex2;
+      this.x = width / 2 - x;
+      this.y = y - BTN_HEIGHT;
 
-      const btn = new Sprite(tex1);
+      const btn = new Graphics();
+      btn.rect(PADDING + 4, 4, width - PADDING * 2, BTN_HEIGHT);
+      btn.fill(SHADOW_COLOR);
+      btn.rect(PADDING, 0, width - PADDING * 2, BTN_HEIGHT);
+      btn.fill(ACCENT_COLOR);
 
-      btn.x = x;
-      btn.y = y;
-
-      btn.anchor.set(0.5);
       btn.eventMode = 'static';
       btn.cursor = 'pointer';
 
-      const btn_caption = new Text({ text: caption });
-      btn_caption.anchor.set(0.5);
+      const btn_caption = new FancyText(caption, { fill: '#000', fontSize: 20, dropShadow: null });
+      btn_caption.anchor.set(0.5, 0.45);
 
-      btn_caption.x = x;
-      btn_caption.y = y - 6;
+      btn_caption.x = width / 2;
+      btn_caption.y = BTN_HEIGHT / 2;
 
       btn.on('pointerdown', () => {
-         btn.texture = this.#pressedTex;
-         btn_caption.y += 9;
+         this.y += 4;
       });
 
       btn.on('pointerup', () => {
-         btn.texture = this.#unpressedTex;
-         btn_caption.y -= 9;
+         this.y -= 4;
 
          clickHandler?.();
       });

@@ -25,32 +25,29 @@ class MainScreen extends Screen {
 
       this.$container.addChild(
          new Button({
+            width: app.canvas.width,
             x: screen_center_x,
             y: screen_center_y,
             caption: 'Start',
-            tex1: this.#tex.BTN_UNPRESSED,
-            tex2: this.#tex.BTN_PRESSED,
             clickHandler: nextScreen
          })
       );
 
       this.$container.addChild(
          new Button({
+            width: app.canvas.width,
             x: screen_center_x,
             y: screen_center_y + 100,
             caption: 'Continue',
-            tex1: this.#tex.BTN_UNPRESSED,
-            tex2: this.#tex.BTN_PRESSED
          })
       );
 
       this.$container.addChild(
          new Button({
+            width: app.canvas.width,
             x: screen_center_x,
             y: screen_center_y + 200,
             caption: 'Credits',
-            tex1: this.#tex.BTN_UNPRESSED,
-            tex2: this.#tex.BTN_PRESSED
          })
       );
 
