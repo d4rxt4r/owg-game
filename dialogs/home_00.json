@@ -1,12 +1,14 @@
 [
    {
       "name": "Марс Воронин",
-      "sprite": "../tex/mars/dialog_00.png",
+      "sprite": "../images/mars/dialog_00.png",
+      "background": "../images/dialog/home_00.png",
       "text": "Я тут!"
    },
    {
       "name": "Марс Воронин",
-      "sprite": "../tex/mars/dialog_00.png",
+      "sprite": "../images/mars/dialog_00.png",
+      "background": "../images/dialog/home_01.png",
       "text": "Как дела?"
    }
 ]

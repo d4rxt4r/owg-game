@@ -14,8 +14,8 @@ class MainScreen extends Screen {
       super.init();
 
       this.#tex = {
-         BTN_UNPRESSED: await Assets.load('../tex/but_unpressed.png'),
-         BTN_PRESSED: await Assets.load('../tex/but_pressed.png')
+         BTN_UNPRESSED: await Assets.load('/images/but_unpressed.png'),
+         BTN_PRESSED: await Assets.load('/images/but_pressed.png')
       };
    }
 

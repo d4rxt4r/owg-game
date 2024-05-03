@@ -28,15 +28,15 @@ class DialogScreen extends Screen {
       super.init();
 
       this.#frame_id = 0;
-      this.#dialog_data = await fetch(`./dialogs/${this.#dialog_id}.json`).then((response) => response.json());
+      this.#dialog_data = await fetch(`/dialogs/${this.#dialog_id}.json`).then((response) => response.json());
 
       const char_tex = new Set();
       this.#dialog_data.forEach((d) => char_tex.add(d.sprite));
 
       this.#tex = {
-         BTN_UNPRESSED: await Assets.load('../tex/but_unpressed.png'),
-         BTN_PRESSED: await Assets.load('../tex/but_pressed.png'),
-         BG: await Assets.load(`../tex/dialog/${this.#dialog_id}.png`)
+         BTN_UNPRESSED: await Assets.load('/images/but_unpressed.png'),
+         BTN_PRESSED: await Assets.load('/images/but_pressed.png'),
+         BG: await Assets.load(`/images/dialog/${this.#dialog_id}.png`)
       };
 
       for (const tex of char_tex) {

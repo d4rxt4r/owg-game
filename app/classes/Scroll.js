@@ -27,8 +27,8 @@ class ScrollScreen extends Screen {
       super.init();
 
       this.#tex = {
-         PLAYER: await Assets.load('../tex/mars/player_00.png'),
-         BG: await Assets.load(`../tex/level/${this.#bg_path}.png`)
+         PLAYER: await Assets.load('/images/mars/player_00.png'),
+         BG: await Assets.load(`/images/level/${this.#bg_path}.png`)
       };
 
       this.#screen_w = app.screen.width;
