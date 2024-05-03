@@ -1,0 +1,12 @@
+[
+   {
+      "name": "Марс Воронин",
+      "sprite": "../tex/mars/dialog_00.png",
+      "text": "Я тут!"
+   },
+   {
+      "name": "Марс Воронин",
+      "sprite": "../tex/mars/dialog_00.png",
+      "text": "Как дела?"
+   }
+]
