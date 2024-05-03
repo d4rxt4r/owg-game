@@ -25,6 +25,8 @@ class DialogScreen extends Screen {
    }
 
    async init() {
+      super.init();
+
       this.#frame_id = 0;
       this.#dialog_data = await fetch(`./dialogs/${this.#dialog_id}.json`).then((response) => response.json());
 
@@ -106,8 +108,8 @@ class DialogScreen extends Screen {
       bg.height = height;
       this.#background_tex = bg;
 
-      this.$objects.push(bg, speaker, dialog_box, frame_counter, dialog_text, next_frame_btn);
-      this.$objects.forEach((obj) => app.stage.addChild(obj));
+      this.$container.addChild(bg, speaker, dialog_box, frame_counter, dialog_text, next_frame_btn);
+      app.stage.addChild(this.$container);
 
       this.nextFrame(nextScreen);
    }

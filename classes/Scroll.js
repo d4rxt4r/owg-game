@@ -20,6 +20,8 @@ class ScrollScreen extends Screen {
    }
 
    async init() {
+      super.init();
+
       this.#tex = {
          PLAYER: await Assets.load('../tex/mars/player_00.png'),
          BG: await Assets.load(`../tex/level/${this.#bg_path}`)
@@ -47,8 +49,8 @@ class ScrollScreen extends Screen {
       bg_sprite.y = 0;
       this.#bg_sprite = bg_sprite;
 
-      this.$objects.push(bg_sprite);
-      this.$objects.forEach((obj) => app.stage.addChild(obj));
+      this.$container.addChild(bg_sprite);
+      app.stage.addChild(this.$container);
    }
 }
 

@@ -1,14 +1,17 @@
 class Screen {
    #paused = false;
-   $objects = [];
+   $container;
+
+   init() {
+      this.$container = new PIXI.Container();
+   }
 
    pause() {
 
    }
 
    destroy() {
-      this.$objects.forEach((obj) => obj.destroy());
-      this.$objects.length = 0;
+      this.$container.destroy();
    }
 }
 

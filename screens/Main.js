@@ -11,6 +11,8 @@ class MainScreen extends Screen {
    }
 
    async init() {
+      super.init();
+
       this.#tex = {
          BTN_UNPRESSED: await Assets.load('../tex/but_unpressed.png'),
          BTN_PRESSED: await Assets.load('../tex/but_pressed.png')
@@ -21,7 +23,7 @@ class MainScreen extends Screen {
       const screen_center_x = app.canvas.width / 2;
       const screen_center_y = app.canvas.height / 2;
 
-      this.$objects.push(
+      this.$container.addChild(
          new Button({
             x: screen_center_x,
             y: screen_center_y,
@@ -32,7 +34,7 @@ class MainScreen extends Screen {
          })
       );
 
-      this.$objects.push(
+      this.$container.addChild(
          new Button({
             x: screen_center_x,
             y: screen_center_y + 100,
@@ -42,7 +44,7 @@ class MainScreen extends Screen {
          })
       );
 
-      this.$objects.push(
+      this.$container.addChild(
          new Button({
             x: screen_center_x,
             y: screen_center_y + 200,
@@ -52,7 +54,7 @@ class MainScreen extends Screen {
          })
       );
 
-      this.$objects.forEach((obj) => app.stage.addChild(obj));
+      app.stage.addChild(this.$container);
    }
 }
 
