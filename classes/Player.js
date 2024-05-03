@@ -1,51 +1,62 @@
 const { Assets, Sprite } = PIXI;
 
-const JOY_W = 200;
-const JOY_H = 200;
-
-/**
- * @typedef {Object} StickData
- * @property {string} cardinalDirection
- * @property {string} x
- * @property {string} y
- * @property {number} xPosition
- * @property {number} yPosition
- */
-
 class Player {
    #sprite;
-   // movement
-   #acc = { x: 0, y: 0 };
-   #speed = 0.05;
+
+   #screen_bound;
 
    constructor() {}
 
-   async init(app) {
-      const texture = await Assets.load('../tex/chel.jpg');
+   async init(app, container) {
+      const texture = await Assets.load('../tex/mars/player_00.png');
       const sprite = new Sprite(texture);
 
-      sprite.setSize(64, 64);
-      sprite.anchor.set(0.5);
+      sprite.scale = 0.5;
+      // sprite.anchor.set(0.5);
+      sprite.zIndex = 100;
 
-      sprite.x = app.screen.width / 2;
-      sprite.y = app.screen.height / 2;
+      const ground_height = app.screen.height - app.screen.height / 3 - sprite.height;
+      sprite.x = -32;
+      sprite.y = ground_height;
 
-      app.stage.addChild(sprite);
-
-      app.ticker.add((time) => {
-         this.#sprite.x += this.#acc.x * time.deltaTime;
-         this.#sprite.y += this.#acc.y * time.deltaTime;
-      });
+      container.addChild(sprite);
 
       this.#sprite = sprite;
+      this.#screen_bound = app.screen.width - sprite.width + 32;
    }
 
-   /**
-    * @param {StickData} stickData
-    */
-   moveHandler = (stickData) => {
-      this.#acc.x = this.#speed * (stickData.xPosition - JOY_W / 2);
-      this.#acc.y = this.#speed * (stickData.yPosition - JOY_H / 2);
+   get x() {
+      return this.#sprite.x;
+   }
+
+   get y() {
+      return this.#sprite.y;
+   }
+
+   get width() {
+      return this.#sprite.width;
+   }
+
+   move = (x, y, bg_locked) => {
+      const ground_y_bound = window.innerHeight - window.innerHeight / 3 - this.#sprite.height;
+      const screen_y_bound = window.innerHeight - this.#sprite.height / 2 - ground_y_bound / 2;
+
+      this.#sprite.y -= y * 0.01;
+      if (bg_locked) {
+         this.#sprite.x += x * 0.01;
+      }
+
+      if (this.#sprite.x < -32) {
+         this.#sprite.x = -32;
+      } else if (this.#sprite.x > this.#screen_bound) {
+         this.#sprite.x = this.#screen_bound;
+      }
+
+      if (this.#sprite.y < ground_y_bound) {
+         this.#sprite.y = ground_y_bound;
+      } else if (this.#sprite.y > screen_y_bound) {
+         this.#sprite.y = screen_y_bound;
+      }
    };
 }
 
