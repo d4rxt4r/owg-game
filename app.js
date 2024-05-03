@@ -33,7 +33,7 @@ const action_button = document.getElementById('action_button');
 window._JOY_STICK = joy_stick;
 window._ACTION_BTN = action_button;
 
-let currentScreenId = 1;
+let currentScreenId = 0;
 const nextScreen = async () => {
    APP_SCREENS[currentScreenId].destroy();
 

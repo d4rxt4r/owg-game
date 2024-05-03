@@ -37,8 +37,6 @@ class DialogScreen extends Screen {
       this.#dialog_data.forEach((d) => char_tex.add(d.sprite));
 
       this.#tex = {
-         BTN_UNPRESSED: await Assets.load('/images/but_unpressed.png'),
-         BTN_PRESSED: await Assets.load('/images/but_pressed.png'),
          BG: await Assets.load(`/images/dialog/${this.#dialog_id}.png`)
       };
 

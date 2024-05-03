@@ -41,7 +41,7 @@ class ScrollScreen extends Screen {
       const bg_sprite = new Sprite(this.#tex.BG);
       bg_sprite.x = 0;
       bg_sprite.y = 0;
-      bg_sprite.scale = window.innerHeight / bg_sprite.height;
+      bg_sprite.scale = app.canvas.height / bg_sprite.height;
       bg_sprite.zIndex = 0;
 
       this.#bg_end = bg_sprite.width - app.canvas.width;
