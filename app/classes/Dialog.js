@@ -2,7 +2,8 @@ import Screen from './Screen.js';
 import Button from './Button.js';
 import FancyText from './FancyText.js';
 
-const { Assets, Graphics, Sprite, Text } = PIXI;
+const { Assets, Graphics, Sprite, ColorMatrixFilter } = PIXI;
+const { Tween } = createjs;
 
 class DialogScreen extends Screen {
    #tex = {};
@@ -35,12 +36,13 @@ class DialogScreen extends Screen {
 
       const char_tex = new Set();
       this.#dialog_data.forEach((d) => char_tex.add(d.sprite));
-
-      this.#tex = {
-         BG: await Assets.load(`/images/dialog/${this.#dialog_id}.png`)
-      };
+      const bg_tex = new Set();
+      this.#dialog_data.forEach((d) => bg_tex.add(d.background));
 
       for (const tex of char_tex) {
+         this.#tex[tex] = await Assets.load(tex);
+      }
+      for (const tex of bg_tex) {
          this.#tex[tex] = await Assets.load(tex);
       }
    }
@@ -52,17 +54,60 @@ class DialogScreen extends Screen {
 
       const data = this.#dialog_data[this.#frame_id];
 
-      const speaker_sprite = this.#tex[data.sprite];
-      this.#speaker.texture = speaker_sprite;
-      this.#speaker.scale = this.#w / speaker_sprite.width;
-      this.#speaker.y = this.#h - speaker_sprite.height - this.#dialog_box_height;
+      if (this.#background_tex.texture.label !== this.#tex[data.background].label) {
+         const bg_sprite = this.#tex[data.background];
+         this.#background_tex.alpha = 0;
+         Tween.get(this.#background_tex).to({ alpha: 1 }, 800);
+         this.#background_tex.texture = bg_sprite;
+         this.#background_tex.scale = this.#w / bg_sprite.width;
+      }
 
-      this.#text.text = data.text;
+      if (this.#speaker.texture.label !== this.#tex[data.sprite].label) {
+         const speaker_sprite = this.#tex[data.sprite];
+         this.#speaker.texture = speaker_sprite;
+         const speaker_scale = this.#w / speaker_sprite.width;
+         this.#speaker.scale = speaker_scale;
+         const speaker_y_pos = this.#h - this.#speaker.height / 2 - this.#dialog_box_height;
+         this.#speaker.scale = speaker_scale;
+         this.#speaker.y = speaker_y_pos + 32;
 
-      this.#speaker_name.text = data.name;
+         Tween.get(this.#speaker).to({ y: speaker_y_pos }, 600);
+         Tween.get(this.#speaker.scale).to({ x: speaker_scale + 0.1, y: speaker_scale + 0.1 }, 600);
+      }
+
+      let char_count = 0;
+      const draw_text = () => {
+         setTimeout(() => {
+            char_count += 1;
+            this.#text.text = data.text.slice(0, char_count);
+
+            if (char_count < data.text.length) {
+               draw_text();
+            }
+         }, 60);
+      };
+
+      if (this.#speaker_name.text !== data.name) {
+         let char_count = 0;
+         const draw_name = () => {
+            setTimeout(() => {
+               char_count += 1;
+               this.#speaker_name.text = data.name.slice(0, char_count);
+
+               if (char_count < data.name.length) {
+                  draw_name();
+               } else {
+                  draw_text();
+               }
+            }, 60);
+         };
+
+         draw_name();
+      } else {
+         draw_text();
+      }
 
       this.#frame_id += 1;
-
       this.#frame_counter.text = `${this.#frame_id}/${this.#dialog_data.length}`;
    }
 
@@ -93,8 +138,9 @@ class DialogScreen extends Screen {
       });
 
       const speaker = new Sprite();
-      speaker.x = 0;
+      speaker.x = width / 2;
       speaker.y = 0;
+      speaker.anchor.set(0.5, 0.5);
       this.#speaker = speaker;
 
       const speaker_name = new FancyText('', { fontSize: 24 });
