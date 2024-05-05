@@ -1,4 +1,4 @@
-import MainScreen from '/app/screens/Main.js';
+import MainMenu from '/app/screens/Main.js';
 import HomeDialog from '/app/screens/Home.js';
 import MagnitScreen from '/app/screens/Magnit.js';
 import MagnitDialog from '/app/screens/MagnitDialog.js';
@@ -6,12 +6,11 @@ import MagnitDialog from '/app/screens/MagnitDialog.js';
 const { Application, Assets } = PIXI;
 
 const APP_CONTAINER = document.getElementById('app');
-const APP_SCREENS = [new MainScreen(), new HomeDialog(), new MagnitScreen(), new MagnitDialog()];
+const APP_SCREENS = [new MainMenu(), new HomeDialog(), new MagnitScreen(), new MagnitDialog()];
 
 const app = new Application();
 await app.init({ background: 'black', width: APP_CONTAINER.offsetWidth, height: APP_CONTAINER.offsetHeight });
 APP_CONTAINER.prepend(app.canvas);
-window._APP_CANVAS = app.canvas;
 
 Assets.addBundle('fonts', [
    { alias: 'kongtext', src: '/fonts/kongtext.ttf' },
@@ -29,15 +28,30 @@ const joy_stick = new JoyStick('joy_stick', {
    externalStrokeColor: '#F9DF7E',
    autoReturnToCenter: true
 });
+const joy_div = document.getElementById('joy_stick');
 const action_button = document.getElementById('action_button');
-window._JOY_STICK = joy_stick;
-window._JOY_DIV = document.getElementById('joy_stick');
-window._ACTION_BTN = action_button;
-window._JOY_DIV.style.display = 'none';
-window._ACTION_BTN.style.display = 'none';
 
-let currentScreenId = 0;
-const nextScreen = async () => {
+const toggleControlsVisibility = () => {
+   if (joy_div.style.display === 'none') {
+      joy_div.style.display = 'block';
+      action_button.style.display = 'block';
+   } else {
+      joy_div.style.display = 'none';
+      action_button.style.display = 'none';
+   }
+};
+toggleControlsVisibility();
+
+let currentScreenId = 2;
+// FIXME: store global vars in more better way
+window._APP_CANVAS = app.canvas;
+window._APP_WIDTH = app.canvas.width;
+window._APP_HEIGHT = app.canvas.height;
+window._JOY_STICK = joy_stick;
+window._ACTION_BTN = action_button;
+window._JOY_DIV = joy_div;
+window._TOGGLE_CONTROLS = toggleControlsVisibility;
+window._NEXT_SCREEN = async () => {
    APP_SCREENS[currentScreenId].destroy();
 
    currentScreenId += 1;
@@ -45,9 +59,9 @@ const nextScreen = async () => {
       currentScreenId = 0;
    }
 
-   await APP_SCREENS[currentScreenId].init();
-   APP_SCREENS[currentScreenId].create(app, nextScreen);
+   await APP_SCREENS[currentScreenId].load();
+   await APP_SCREENS[currentScreenId].create(app);
 };
 
-await APP_SCREENS[currentScreenId].init();
-APP_SCREENS[currentScreenId].create(app, nextScreen);
+await APP_SCREENS[currentScreenId].load();
+await APP_SCREENS[currentScreenId].create(app);

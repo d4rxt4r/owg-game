@@ -12,20 +12,12 @@ class Interactable extends Container {
       this.#options = options;
    }
 
-   get o_x() {
-      return this.#options.x;
-   }
-
    get x() {
       return this.#sprite.x;
    }
 
    get y() {
       return this.#sprite.y;
-   }
-
-   set x(x) {
-      this.#sprite.x = x;
    }
 
    async init() {

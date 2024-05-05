@@ -44,7 +44,7 @@ class Player {
       return this.#sprite.width;
    }
 
-   move = (x, y, bg_locked) => {
+   move = (x, y, allow_x_movement) => {
       if (!x || !y) {
          return;
       }
@@ -63,7 +63,7 @@ class Player {
       const scale = this.#sprite_scale * this.face_direction;
       this.#sprite.scale.x = scale;
 
-      if (bg_locked) {
+      if (allow_x_movement) {
          this.#sprite.x += x * 0.01;
 
          if (this.#sprite.x < -32) {

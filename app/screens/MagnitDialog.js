@@ -1,6 +1,6 @@
-import DialogScreen from '../classes/Dialog.js';
+import Dialog from '../classes/Dialog.js';
 
-class MagnitDialog extends DialogScreen {
+class MagnitDialog extends Dialog {
    constructor() {
       super('magnit_00');
    }

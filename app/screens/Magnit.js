@@ -1,6 +1,6 @@
-import ScrollScreen from '../classes/Scroll.js';
+import ActionScreen from '../classes/ActionScreen.js';
 
-class MagnitScreen extends ScrollScreen {
+class MagnitScreen extends ActionScreen {
    constructor() {
       const objects = [
          {
@@ -9,12 +9,17 @@ class MagnitScreen extends ScrollScreen {
             sprite: '/images/npc/varya_00.png',
             width: 90,
             action: () => {
-               this.nextScreen();
+               window._NEXT_SCREEN();
             }
          }
       ];
 
-      super('magnit_00', objects);
+      super(
+         {
+            bg_path: '/images/level/magnit_00.png'
+         },
+         objects
+      );
    }
 }
 

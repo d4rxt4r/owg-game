@@ -6,8 +6,9 @@ Ref:
 
 [TweenJS](https://createjs.com/tweenjs)
 
-
 TODO:
 === Dialog's===
-Text, bg && person animations
 Random main char name gen
+
+=== Controls ===
+action button class with callbacks

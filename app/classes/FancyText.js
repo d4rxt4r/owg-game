@@ -20,4 +20,21 @@ class FancyText extends PIXI.Text {
    }
 }
 
+export function print_text(text, text_el, printed_count = 0, callback = null) {
+   if (!text || !text_el) {
+      return;
+   }
+
+   setTimeout(() => {
+      printed_count += 1;
+      text_el.text = text.slice(0, printed_count);
+
+      if (printed_count < text.length) {
+         print_text(text, text_el, printed_count, callback);
+      } else if (callback) {
+         callback();
+      }
+   }, 60);
+}
+
 export default FancyText;

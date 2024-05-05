@@ -1,26 +1,20 @@
 import Screen from './Screen.js';
 import Button from './Button.js';
-import FancyText from './FancyText.js';
+import FancyText, { print_text } from './FancyText.js';
 
-const { Assets, Graphics, Sprite, ColorMatrixFilter } = PIXI;
+const { Assets, Graphics, Sprite } = PIXI;
 const { Tween } = createjs;
 
-class DialogScreen extends Screen {
+class Dialog extends Screen {
    #tex = {};
    #dialog_id;
    #dialog_data = [];
    #dialog_box_height;
-
-   #background_tex;
-
    #frame_id = 0;
    #frame_counter;
    #speaker;
    #speaker_name;
    #text;
-
-   #w;
-   #h;
 
    constructor(dialog_id) {
       super();
@@ -28,9 +22,7 @@ class DialogScreen extends Screen {
       this.#dialog_id = dialog_id;
    }
 
-   async init() {
-      super.init();
-
+   async load() {
       this.#frame_id = 0;
       this.#dialog_data = await fetch(`/dialogs/${this.#dialog_id}.json`).then((response) => response.json());
 
@@ -45,79 +37,19 @@ class DialogScreen extends Screen {
       for (const tex of bg_tex) {
          this.#tex[tex] = await Assets.load(tex);
       }
+
+      this.$options.bg_path = this.#dialog_data[0].background;
+
+      await super.load();
    }
 
-   nextFrame(nextScreen) {
-      if (this.#frame_id === this.#dialog_data.length) {
-         return nextScreen();
-      }
+   async create(app) {
+      super.create(app);
 
-      const data = this.#dialog_data[this.#frame_id];
-
-      if (this.#background_tex.texture.label !== this.#tex[data.background].label) {
-         const bg_sprite = this.#tex[data.background];
-         this.#background_tex.alpha = 0;
-         Tween.get(this.#background_tex).to({ alpha: 1 }, 800);
-         this.#background_tex.texture = bg_sprite;
-         this.#background_tex.scale = this.#w / bg_sprite.width;
-      }
-
-      if (this.#speaker.texture.label !== this.#tex[data.sprite].label) {
-         const speaker_sprite = this.#tex[data.sprite];
-         this.#speaker.texture = speaker_sprite;
-         const speaker_scale = this.#w / speaker_sprite.width;
-         this.#speaker.scale = speaker_scale;
-         const speaker_y_pos = this.#h - this.#speaker.height / 2 - this.#dialog_box_height;
-         this.#speaker.scale = speaker_scale;
-         this.#speaker.y = speaker_y_pos + 32;
-
-         Tween.get(this.#speaker).to({ y: speaker_y_pos }, 600);
-         Tween.get(this.#speaker.scale).to({ x: speaker_scale + 0.1, y: speaker_scale + 0.1 }, 600);
-      }
-
-      let char_count = 0;
-      const draw_text = () => {
-         setTimeout(() => {
-            char_count += 1;
-            this.#text.text = data.text.slice(0, char_count);
-
-            if (char_count < data.text.length) {
-               draw_text();
-            }
-         }, 60);
-      };
-
-      if (this.#speaker_name.text !== data.name) {
-         let char_count = 0;
-         const draw_name = () => {
-            setTimeout(() => {
-               char_count += 1;
-               this.#speaker_name.text = data.name.slice(0, char_count);
-
-               if (char_count < data.name.length) {
-                  draw_name();
-               } else {
-                  draw_text();
-               }
-            }, 60);
-         };
-
-         draw_name();
-      } else {
-         draw_text();
-      }
-
-      this.#frame_id += 1;
-      this.#frame_counter.text = `${this.#frame_id}/${this.#dialog_data.length}`;
-   }
-
-   create(app, nextScreen) {
       const dialog_box = new Graphics();
 
       const width = app.canvas.width;
       const height = app.canvas.height;
-      this.#w = width;
-      this.#h = height;
       const dialog_box_height = height / 4;
 
       dialog_box.rect(0, height - dialog_box_height, width, dialog_box_height);
@@ -133,7 +65,7 @@ class DialogScreen extends Screen {
          y: height - 24,
          caption: 'CONTINUE',
          clickHandler: () => {
-            this.nextFrame(nextScreen);
+            this.nextFrame();
          }
       });
 
@@ -158,18 +90,47 @@ class DialogScreen extends Screen {
       frame_counter.y = 40;
       this.#frame_counter = frame_counter;
 
-      const bg = new Sprite(this.#tex.BG);
-      bg.x = 0;
-      bg.y = 0;
-      bg.width = width;
-      bg.height = height;
-      this.#background_tex = bg;
-
-      this.$container.addChild(bg, speaker, dialog_box, frame_counter, speaker_name, dialog_text, next_frame_btn);
+      this.$container.addChild(speaker, dialog_box, frame_counter, speaker_name, dialog_text, next_frame_btn);
       app.stage.addChild(this.$container);
 
-      this.nextFrame(nextScreen);
+      this.nextFrame();
+   }
+
+   nextFrame() {
+      if (this.#frame_id === this.#dialog_data.length) {
+         return window._NEXT_SCREEN();
+      }
+
+      const data = this.#dialog_data[this.#frame_id];
+
+      if (this.$background.texture.label !== this.#tex[data.background].label) {
+         this.setBackground(this.#tex[data.background]);
+      }
+
+      if (this.#speaker.texture.label !== this.#tex[data.sprite].label) {
+         const speaker_sprite = this.#tex[data.sprite];
+         this.#speaker.texture = speaker_sprite;
+         const speaker_scale = window._APP_WIDTH / speaker_sprite.width;
+         this.#speaker.scale = speaker_scale;
+         const speaker_y_pos = window._APP_HEIGHT - this.#speaker.height / 2 - this.#dialog_box_height;
+         this.#speaker.scale = speaker_scale;
+         this.#speaker.y = speaker_y_pos + 32;
+
+         // speaker change animation
+         Tween.get(this.#speaker).to({ y: speaker_y_pos }, 600);
+         Tween.get(this.#speaker.scale).to({ x: speaker_scale + 0.1, y: speaker_scale + 0.1 }, 600);
+      }
+
+      // FIXME: if animation is not done, it will bug-out
+      if (this.#speaker_name.text !== data.name) {
+         print_text(data.name, this.#speaker_name, 0, () => print_text(data.text, this.#text));
+      } else {
+         print_text(data.text, this.#text);
+      }
+
+      this.#frame_id += 1;
+      this.#frame_counter.text = `${this.#frame_id}/${this.#dialog_data.length}`;
    }
 }
 
-export default DialogScreen;
+export default Dialog;

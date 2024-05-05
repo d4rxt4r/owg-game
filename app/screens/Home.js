@@ -1,6 +1,6 @@
-import DialogScreen from '../classes/Dialog.js';
+import Dialog from '../classes/Dialog.js';
 
-class HomeDialog extends DialogScreen {
+class HomeDialog extends Dialog {
    constructor() {
       super('home_00');
    }
