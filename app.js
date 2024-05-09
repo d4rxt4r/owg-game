@@ -1,7 +1,7 @@
-import MainMenu from '/app/screens/Main.js';
-import HomeDialog from '/app/screens/Home.js';
-import MagnitScreen from '/app/screens/Magnit.js';
-import MagnitDialog from '/app/screens/MagnitDialog.js';
+import MainMenu from './app/screens/Main.js';
+import HomeDialog from './app/screens/Home.js';
+import MagnitScreen from './app/screens/Magnit.js';
+import MagnitDialog from './app/screens/MagnitDialog.js';
 
 const { Application, Assets } = PIXI;
 
@@ -42,7 +42,7 @@ const toggleControlsVisibility = () => {
 };
 toggleControlsVisibility();
 
-let currentScreenId = 2;
+let currentScreenId = 0;
 // FIXME: store global vars in more better way
 window._APP_CANVAS = app.canvas;
 window._APP_WIDTH = app.canvas.width;

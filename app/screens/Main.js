@@ -1,7 +1,8 @@
 import Screen from '../classes/Screen.js';
 import Button from '../classes/Button.js';
+import { ACCENT_COLOR } from '../const.js';
 
-const { Assets, Sprite } = PIXI;
+const { Assets, Sprite, Text } = PIXI;
 
 const PADDING = 55;
 const PADDING2 = PADDING * 2;
@@ -61,6 +62,19 @@ class MainMenu extends Screen {
             caption: 'O SOZDATELYAH'
          })
       );
+
+      const bottom_text = new Text({
+         text: '2024',
+         style: {
+            fill: ACCENT_COLOR,
+            fontFamily: 'kongtext',
+            fontSize: 24
+         }
+      });
+      bottom_text.anchor.set(0.5, 0.5);
+      bottom_text.x = screen_center_x;
+      bottom_text.y = app.canvas.height - 16 - bottom_text.height;
+      this.$container.addChild(bottom_text);
 
       app.stage.addChild(this.$container);
    }
