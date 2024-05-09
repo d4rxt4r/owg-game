@@ -6,7 +6,7 @@ class MagnitScreen extends ActionScreen {
          {
             x: 1040,
             y: -30,
-            sprite: '/images/npc/varya_00.png',
+            sprite: './images/npc/varya_00.png',
             width: 90,
             action: () => {
                window._NEXT_SCREEN();
@@ -16,7 +16,7 @@ class MagnitScreen extends ActionScreen {
 
       super(
          {
-            bg_path: '/images/level/magnit_00.png'
+            bg_path: './images/level/magnit_00.png'
          },
          objects
       );
