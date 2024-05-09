@@ -13,8 +13,8 @@ await app.init({ background: 'black', width: APP_CONTAINER.offsetWidth, height: 
 APP_CONTAINER.prepend(app.canvas);
 
 Assets.addBundle('fonts', [
-   { alias: 'kongtext', src: '/fonts/kongtext.ttf' },
-   { alias: 'ka1', src: '/fonts/ka1.ttf' }
+   { alias: 'kongtext', src: './fonts/kongtext.ttf' },
+   { alias: 'ka1', src: './fonts/ka1.ttf' }
 ]);
 await Assets.loadBundle('fonts');
 
