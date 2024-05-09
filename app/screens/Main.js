@@ -10,7 +10,7 @@ const PADDING2 = PADDING * 2;
 class MainMenu extends Screen {
    constructor() {
       super({
-         bg_path: '/images/dialog/main_00.png'
+         bg_path: './images/dialog/main_00.png'
       });
    }
 
@@ -20,7 +20,7 @@ class MainMenu extends Screen {
       const width = app.canvas.width;
       const height = app.canvas.height;
 
-      const logo = new Sprite(await Assets.load('/images/logo.png'));
+      const logo = new Sprite(await Assets.load('./images/logo.png'));
       logo.x = PADDING;
       logo.y = height / 2 - logo.height;
       logo.scale = (width - PADDING2) / logo.width;

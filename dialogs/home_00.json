@@ -1,14 +1,14 @@
 [
    {
       "name": "MARS VORONIN",
-      "sprite": "../images/mars/dialog_00.png",
-      "background": "../images/dialog/home_00.png",
+      "sprite": "./images/mars/dialog_00.png",
+      "background": "./images/dialog/home_00.png",
       "text": "ALLO YOBA!"
    },
    {
       "name": "MARS VORONIN",
-      "sprite": "../images/mars/dialog_00.png",
-      "background": "../images/dialog/home_01.png",
+      "sprite": "./images/mars/dialog_00.png",
+      "background": "./images/dialog/home_01.png",
       "text": "TI TUT?"
    }
 ]

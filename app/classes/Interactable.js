@@ -24,8 +24,8 @@ class Interactable extends Container {
       this.#sprite_tex = await Assets.load(this.#options.sprite);
    }
 
-   is_close(x, y) {
-      const dist = Math.sqrt(Math.pow(x - this.#sprite.x, 2) + Math.pow(y - this.#sprite.y, 2));
+   is_close(player, foreground) {
+      const dist = Math.sqrt(Math.pow(player.x - (this.#sprite.x + foreground.x), 2) + Math.pow(player.y - this.#sprite.y, 2));
       return dist < MIN_RANGE;
    }
 

@@ -1,3 +1,4 @@
+import { ACCENT_COLOR } from './app/const.js';
 import MainMenu from './app/screens/Main.js';
 import HomeDialog from './app/screens/Home.js';
 import MagnitScreen from './app/screens/Magnit.js';
@@ -21,11 +22,11 @@ await Assets.loadBundle('fonts');
 const joy_stick = new JoyStick('joy_stick', {
    width: 200,
    height: 200,
-   internalFillColor: '#F9DF7E',
+   internalFillColor: ACCENT_COLOR,
    // internalLineWidth,
-   internalStrokeColor: '#F9DF7EAA',
+   internalStrokeColor: `${ACCENT_COLOR}AA`,
    // externalLineWidth,
-   externalStrokeColor: '#F9DF7E',
+   externalStrokeColor: ACCENT_COLOR,
    autoReturnToCenter: true
 });
 const joy_div = document.getElementById('joy_stick');

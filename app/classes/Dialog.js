@@ -24,7 +24,7 @@ class Dialog extends Screen {
 
    async load() {
       this.#frame_id = 0;
-      this.#dialog_data = await fetch(`/dialogs/${this.#dialog_id}.json`).then((response) => response.json());
+      this.#dialog_data = await fetch(`./dialogs/${this.#dialog_id}.json`).then((response) => response.json());
 
       const char_tex = new Set();
       this.#dialog_data.forEach((d) => char_tex.add(d.sprite));
@@ -63,7 +63,7 @@ class Dialog extends Screen {
          width,
          x: width / 2,
          y: height - 24,
-         caption: 'CONTINUE',
+         caption: '...',
          clickHandler: () => {
             this.nextFrame();
          }

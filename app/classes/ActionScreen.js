@@ -68,7 +68,7 @@ class ActionsScreen extends Screen {
 
    #actionHandler = () => {
       this.#objects.forEach((obj) => {
-         if (obj.is_close(this.#player.x, this.#player.y)) {
+         if (obj.is_close(this.#player, this.#foreground)) {
             obj.activate();
          }
       });

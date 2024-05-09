@@ -11,7 +11,7 @@ class Player {
    constructor() {}
 
    async init(container) {
-      const texture = await Assets.load('/images/mars/player_00.png');
+      const texture = await Assets.load('./images/mars/player_00.png');
       const sprite = new Sprite(texture);
 
       this.#sprite_scale = 150 / sprite.width;
