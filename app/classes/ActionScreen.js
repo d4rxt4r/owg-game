@@ -1,6 +1,9 @@
 import Screen from './Screen.js';
 import Player from './Player.js';
 import Interactable from './Interactable.js';
+import Enemy from './Enemy.js';
+
+const OBJ_TYPE = [Interactable, Enemy];
 
 class ActionsScreen extends Screen {
    #player;
@@ -29,7 +32,7 @@ class ActionsScreen extends Screen {
 
       this.#objects = [];
       for (const obj of this.#objects_data) {
-         const itr = new Interactable(obj);
+         const itr = new OBJ_TYPE[obj.type](obj);
          await itr.init();
          this.#objects.push(itr);
       }
@@ -52,7 +55,7 @@ class ActionsScreen extends Screen {
       app.stage.addChild(this.$container);
 
       this.#placeObjects();
-      this.#handleMovement();
+      this.#handleUpdate();
 
       window._ACTION_BTN.addEventListener('click', this.#actionHandler);
    }
@@ -69,7 +72,7 @@ class ActionsScreen extends Screen {
    #actionHandler = () => {
       this.#objects.forEach((obj) => {
          if (obj.is_close(this.#player, this.#foreground)) {
-            obj.activate();
+            obj.activate(this.#player, this.#foreground);
          }
       });
    };
@@ -100,16 +103,21 @@ class ActionsScreen extends Screen {
       }
    }
 
-   #handleMovement() {
+   #handleUpdate() {
       const joy_stick = window._JOY_STICK;
       const x = joy_stick.GetX();
       const y = joy_stick.GetY();
 
       this.#player.move(x, y, this.#foreground_locked);
+
       this.#handleBackgroundMovement(x);
 
+      this.#objects.forEach((obj) => {
+         obj.update(this.#player, this.#foreground);
+      });
+
       if (!this.#destroyed) {
-         requestAnimationFrame(this.#handleMovement.bind(this));
+         requestAnimationFrame(this.#handleUpdate.bind(this));
       }
    }
 }

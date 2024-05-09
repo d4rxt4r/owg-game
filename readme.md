@@ -12,3 +12,6 @@ Random main char name gen
 
 === Controls ===
 action button class with callbacks
+
+=== Action Screen ===
+NPC Quest Marks Animations

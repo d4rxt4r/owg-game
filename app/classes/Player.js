@@ -2,7 +2,7 @@ const { Assets, Sprite } = PIXI;
 
 class Player {
    dist_from_center = 0;
-   face_direction = 1;
+   face_direction = 0;
 
    #sprite_scale;
    #sprite;
@@ -45,7 +45,7 @@ class Player {
    }
 
    move = (x, y, allow_x_movement) => {
-      if (!x || !y) {
+      if (!+x || !+y) {
          return;
       }
 
